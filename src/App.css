@@ -8,11 +8,11 @@
 }
 
 .error {
-  border: red 1px solid;
+  border: purple 1px solid;
 }
 
 .error-message {
-  color: red;
+  color: purple;
 }
 
 .active-filter {

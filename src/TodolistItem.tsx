@@ -7,6 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 type Props = {
   todolistId: string
@@ -70,7 +73,8 @@ export const TodolistItem = (props: Props) => {
         {tasks.length === 0 ? (
             <p>Тасок нет</p>
         ) : (
-            <ul>
+            //<ul>
+            <List>
               {tasks.map(task => {
                 const deleteTaskHandler = () => {
                   deleteTask(task.id, todolistId)
@@ -83,19 +87,27 @@ export const TodolistItem = (props: Props) => {
 
                 
                 return (
-                    <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                      <input type="checkbox" checked={task.isDone}
-                              onChange={changeTaskStatusHandler}/>
+                    // <li key={task.id} className={task.isDone ? 'is-done' : ''}>
+                      <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
+                      <Checkbox  
+                        defaultChecked 
+                        color="secondary" 
+                        checked={task.isDone}
+                        onChange={changeTaskStatusHandler}/>
+                      {/* <input type="checkbox" checked={task.isDone}
+                              onChange={changeTaskStatusHandler}/> */}
                       {/* <span>{task.title}</span> */}
                       <EditableSpan oldTitle={task.title} onClick={(updateTitle) => updateTaskTitleHandler(task.id, updateTitle)}/>
                       {/* <Button title={'x'} onClick={deleteTaskHandler}/> */}
                       <IconButton aria-label="delete" size="medium" style={{color: 'purple'}} onClick={deleteTaskHandler}>
                         <DeleteIcon fontSize="inherit" />
                       </IconButton>
-                    </li>
+                      </ListItem>
+                    // </li> 
                 )
               })}
-            </ul>
+              </List>
+            // </ul>
         )}
         <div>
         <Stack spacing={1} direction="row">

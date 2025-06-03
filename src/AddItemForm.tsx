@@ -1,6 +1,8 @@
 import { ChangeEvent, KeyboardEvent, useState } from "react"
+import './App.css'
 //import { Button } from "./Button"
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 type Props = {
     addItem: (title: string) => void
@@ -34,22 +36,33 @@ export const AddItemForm = ({addItem}: Props) => {
             }
 
         const ButtonStyle = {
-            maxWidth: '30px',
-            maxHeight: '30px',
-            minWidth: '30px',
-            minHeight: '30px',
+            maxWidth: '38px',
+            maxHeight: '38px',
+            minWidth: '38px',
+            minHeight: '38px',
             background: 'purple'
         }    
 
     return (
         <div>
-            <input className={error ? 'error' : ''}
+            <TextField 
+                error={!!error}
+                id="outlined-basic" 
+                label={ error ? error : 'enter the caption'} 
+                className={ error ? 'error' : ''}
+                variant="outlined" 
+                size="small"
+                value={itemTitle}
+                onChange={changeItemTitleHandler}
+                onKeyDown={addItemOnEnterHandler}
+                />
+            {/* <input className={error ? 'error' : ''}
                     value={itemTitle}
                     onChange={changeItemTitleHandler}
-                    onKeyDown={addItemOnEnterHandler}/>
+                    onKeyDown={addItemOnEnterHandler}/> */}
             {/* <Button title={'+'} onClick={addItemHandler}/> */}
             <Button onClick={addItemHandler} variant="contained" style={ButtonStyle}>+</Button>
-            {error && <div className={'error-message'}>{error}</div>}
+            {/* {error && <div className={'error-message'}>{error}</div>} */}
         
         </div>
     )

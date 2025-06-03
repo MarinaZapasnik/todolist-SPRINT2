@@ -30,9 +30,9 @@ export const EditableSpan = ({oldTitle, onClick}: Props) => {
         edit 
             ?
             <TextField 
-                id="outlined-basic" 
+                id="standart-basic" 
                 label="Outlined" 
-                variant="outlined" 
+                variant="standard" 
                 size="small"
                 onBlur={editHandler}
                 onChange={updateTitleHandler}
@@ -44,7 +44,7 @@ export const EditableSpan = ({oldTitle, onClick}: Props) => {
             //     autoFocus
             //     value={updateTitle}/> 
             :
-            <span onDoubleClick={editHandler}>{oldTitle}</span>
+            <h4 onDoubleClick={editHandler}>{oldTitle}</h4>
         
     )
 }

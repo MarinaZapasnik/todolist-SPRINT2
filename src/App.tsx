@@ -3,6 +3,11 @@ import {useState} from 'react'
 import {v1} from 'uuid'
 import {TodolistItem} from './TodolistItem'
 import { AddItemForm } from './AddItemForm'
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Item from '@mui/material/Grid';
+import ButtonAppBar from './ButtonAppBar';
+import Paper from '@mui/material/Paper';
 
 export type Task = {
   id: string
@@ -101,20 +106,29 @@ export const App = () => {
     }
 
     return (
-      <TodolistItem 
-        key={todo.id}
-        todolistId={todo.id}
-        title={todo.title}
-        filter={todo.filter}
-        tasks={filteredTasks}
-        deleteTask={deleteTask}
-        changeFilter={changeFilter}
-        createTask={createTask}
-        changeTaskStatus={changeTaskStatus}
-        deleteTodolist={deleteTodolist}
-        updateTaskTitle={updateTaskTitle}
-        updateTodolistTitle={updateTodolistTitle}
-        />          
+      <Grid>
+        <Item sx={{p: '30px'}}>
+          <Paper elevation={8} sx={{p: '10px'}}>
+          
+            <TodolistItem 
+              key={todo.id}
+              todolistId={todo.id}
+              title={todo.title}
+              filter={todo.filter}
+              tasks={filteredTasks}
+              deleteTask={deleteTask}
+              changeFilter={changeFilter}
+              createTask={createTask}
+              changeTaskStatus={changeTaskStatus}
+              deleteTodolist={deleteTodolist}
+              updateTaskTitle={updateTaskTitle}
+              updateTodolistTitle={updateTodolistTitle}
+            />    
+
+          </Paper>
+        </Item>
+      </Grid>
+          
     )
   })
 
@@ -131,8 +145,20 @@ export const App = () => {
     
 
       <div className="app">
-        <AddItemForm addItem={addTdodlist}/>
-        {todolistComponents}
+        <Container fixed>
+
+          <ButtonAppBar/>
+
+          <Grid container>
+            <AddItemForm addItem={addTdodlist}/> 
+          </Grid>
+
+          <Grid container>
+            {todolistComponents}
+          </Grid>
+            
+        </Container>
+        
         
       </div>
   )

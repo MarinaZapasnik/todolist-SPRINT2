@@ -8,6 +8,8 @@ import Grid from '@mui/material/Grid';
 import Item from '@mui/material/Grid';
 import ButtonAppBar from './ButtonAppBar';
 import Paper from '@mui/material/Paper';
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline  from '@mui/material/CssBaseline'
 
 export type Task = {
   id: string
@@ -26,6 +28,8 @@ export type TasksStateProps = {
 }
 
 export type FilterValues = 'all' | 'active' | 'completed'
+
+type ThemeMode = 'dark' | 'light'
 
 export const App = () => {
   
@@ -139,27 +143,40 @@ export const App = () => {
   }
 
   
+  const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+  const theme = createTheme({
+    palette: {
+      mode: themeMode === 'light' ? 'light' : 'dark',
+      primary: {
+        main: '#a40837',
+      },
+    },
+  })
+
+  const changeModeHandler = () => {
+    setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+  }
 
   return (
 
-    
-
       <div className="app">
-        <Container fixed>
+        <ThemeProvider theme={theme}>
+          <CssBaseline/>
+            <Container fixed>
 
-          <ButtonAppBar/>
+            <ButtonAppBar onChange={changeModeHandler}/>
 
-          <Grid container>
-            <AddItemForm addItem={addTdodlist}/> 
-          </Grid>
+            <Grid container>
+              <AddItemForm addItem={addTdodlist}/> 
+            </Grid>
 
-          <Grid container>
-            {todolistComponents}
-          </Grid>
+            <Grid container>
+              {todolistComponents}
+            </Grid>
             
-        </Container>
-        
-        
+          </Container>
+            
+        </ThemeProvider>
       </div>
   )
 }

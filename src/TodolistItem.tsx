@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Box from '@mui/material/Box';
+import { taskListItemElementSx } from './Todolist.styles';
 
 type Props = {
   todolistId: string
@@ -61,20 +63,21 @@ export const TodolistItem = (props: Props) => {
   const ButtonStyle = {
     color: 'white',
     background: 'purple',
-    borderColor:'purple'
+    borderColor:'purple',
+    mt:'20px'
 }
 
   return (
       <div>
-        <EditableSpan oldTitle={title} onClick={updateTodolistTitleHandler}/>
-        
+        <EditableSpan 
+          oldTitle={title} 
+          onClick={updateTodolistTitleHandler}/>
         <AddItemForm addItem={addTaskHandler}/>
         
         {tasks.length === 0 ? (
             <p>Тасок нет</p>
         ) : (
-            //<ul>
-            <List>
+            <List >
               {tasks.map(task => {
                 const deleteTaskHandler = () => {
                   deleteTask(task.id, todolistId)
@@ -85,68 +88,66 @@ export const TodolistItem = (props: Props) => {
                   changeTaskStatus(task.id, newStatusValue, todolistId)
                 }
 
-                
                 return (
-                    // <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                      <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
-                      <Checkbox  
-                        defaultChecked 
-                        color="secondary" 
-                        checked={task.isDone}
-                        onChange={changeTaskStatusHandler}/>
-                      {/* <input type="checkbox" checked={task.isDone}
-                              onChange={changeTaskStatusHandler}/> */}
-                      {/* <span>{task.title}</span> */}
-                      <EditableSpan oldTitle={task.title} onClick={(updateTitle) => updateTaskTitleHandler(task.id, updateTitle)}/>
-                      {/* <Button title={'x'} onClick={deleteTaskHandler}/> */}
+                  
+                      <ListItem 
+                        key={task.id} 
+                        //передаем task.isDone, которй просим в стилях
+                        sx={taskListItemElementSx(task.isDone)}>
+                          <Box sx={{display: 'flex'}}>
+
+                            <Checkbox  
+                              defaultChecked 
+                              color="secondary" 
+                              checked={task.isDone}
+                              onChange={changeTaskStatusHandler}/>
+                          
+                          <EditableSpan 
+                            oldTitle={task.title} 
+                            onClick={(updateTitle) => updateTaskTitleHandler(task.id, updateTitle)}/>
+                      
+                          </Box>
+                      
                       <IconButton aria-label="delete" size="medium" style={{color: 'purple'}} onClick={deleteTaskHandler}>
                         <DeleteIcon fontSize="inherit" />
                       </IconButton>
                       </ListItem>
-                    // </li> 
+                    
                 )
               })}
               </List>
-            // </ul>
+            
         )}
         <div>
         <Stack spacing={1} direction="row">
           <Button 
-            style={filter === 'all' ? {background:'purple', borderColor:'purple'} : {}}
+            sx={filter === 'all' ? {background:'purple', borderColor:'purple'} : {}}
             onClick={() => changeFilter('all', todolistId)}
             variant="contained" color="primary">
             All
           </Button>
           <Button 
-            style={filter === 'active' ? {background:'purple', borderColor:'purple'} : {}}
+            sx={filter === 'active' ? {background:'purple', borderColor:'purple'} : {}}
             onClick={() => changeFilter('active', todolistId)}
             variant="contained" color="primary">
             Active
           </Button>
           <Button 
-            style={filter === 'completed' ? {background:'purple', borderColor:'purple'} : {}}
+            sx={filter === 'completed' ? {background:'purple', borderColor:'purple'} : {}}
             onClick={() => changeFilter('completed', todolistId)}
             variant="contained" color="primary">
             Completed
           </Button>
         </Stack>
 
-{/* 
-          <Button className={filter === 'all' ? 'active-filter' : ''}
-                  title={'All'}
-                  onClick={() => changeFilter('all', todolistId)}/>
-          <Button className={filter === 'active' ? 'active-filter' : ''}
-                  title={'Active'}
-                  onClick={() => changeFilter('active', todolistId)}/>
-          <Button className={filter === 'completed' ? 'active-filter' : ''}
-                  title={'Completed'}
-                  onClick={() => changeFilter('completed', todolistId)}/> */}
 
                   <div>
-                    {/* <Button 
-                      title={'Delete TodoList'} 
-                      onClick={deleteTodolistHandler}/> */}
-                      <Button onClick={deleteTodolistHandler} style={ButtonStyle} variant="outlined" startIcon={<DeleteIcon />}>
+                    
+                      <Button 
+                        onClick={deleteTodolistHandler} 
+                        sx={ButtonStyle} variant="outlined" 
+                        startIcon={<DeleteIcon />}
+                        >
                           Delete Todolist
                       </Button>
                   </div>

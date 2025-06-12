@@ -89,6 +89,8 @@ export const App = () => {
 
   const deleteTodolist = (todolistId: string) => {
     setTodolists(todolists.filter(todo => todo.id !== todolistId))
+    delete tasks[todolistId]
+    setTasks({...tasks})
   }
 
   const updateTaskTitle = (todolistId: string, taskId: string, updatedTitle: string) => {

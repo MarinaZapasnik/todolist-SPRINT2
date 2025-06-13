@@ -1,13 +1,13 @@
-import { v1 } from "uuid"
+
 import { FilterValues, TodoListProps } from "../App"
 
-const todolistId_1 = v1()
-const todolistId_2 = v1()
+// const todolistId_1 = v1()
+// const todolistId_2 = v1()
 
-const initialState: TodoListProps[] = [
-    { id: todolistId_1, title: 'What to learn', filter: 'all'},
-    { id: todolistId_2, title: 'What to buy', filter: 'all'},
-]
+// const initialState: TodoListProps[] = [
+//     { id: todolistId_1, title: 'What to learn', filter: 'all'},
+//     { id: todolistId_2, title: 'What to buy', filter: 'all'},
+// ]
 
 //reducer это обычная функция, которая принимает state и action 
 //поэтому пише с маленькой буквы
@@ -16,53 +16,10 @@ const initialState: TodoListProps[] = [
 // МОЗГ АРМИИ - REDUCER, поэтому все функции управления стейтом переедут в reducer 
 
 
-
-
-
-export type AddTodolistActionType = {
-    type: 'ADD-TODOLIST',
-        payload: {
-            title: string
-        }
-}
-
-
-export type RemoveTodolistActionType = {
-    type: 'REMOVE-TODOLIST'
-    payload: {
-        id: string
-    }
-}
-
-
-export type ChangeTodolistTitleActionType = {
-    type: 'CHANGE-TODOLIST-TITLE'
-    payload: {
-        id: string
-        title: string
-    }
-}
-
-export type ChangeTodolistFilterActionType = {
-    type: 'CHANGE-TODOLIST-FILTER'
-    payload: {
-        id: string
-        filter: FilterValues
-    }
-}
-
-
-type ActionsType = 
-    | RemoveTodolistActionType
-    | AddTodolistActionType
-    | ChangeTodolistTitleActionType
-    | ChangeTodolistFilterActionType
-
-export const todolistsReducer = (state = initialState, action:ActionsType): TodoListProps[] => {
+export const todolistsReducer = (state: TodoListProps[], action:ActionsType): TodoListProps[] => {
     //сюда будем закидывать все функции для стейта
     // можно if ами ,но конструкция swith тут более лаконична
     // action это объект с обязательным ключом type
-    //
 
     switch(action.type) {
         case 'REMOVE-TODOLIST' : {
@@ -75,8 +32,8 @@ export const todolistsReducer = (state = initialState, action:ActionsType): Todo
         }
 
         case 'ADD-TODOLIST' : {
-            const todolistId = v1()
-            const newTodolist: TodoListProps = {id: todolistId, title: action.payload.title, filter: 'all'}
+            
+            const newTodolist: TodoListProps = {id: action.payload.id, title: action.payload.title, filter: 'all'}
             return [ ...state, newTodolist]
         }
 
@@ -131,6 +88,48 @@ export const todolistsReducer = (state = initialState, action:ActionsType): Todo
 // это функция которая формирует/возращает наш объект типа action 
 // Action Creator - это как инструкция, что делать
 
+
+
+export type AddTodolistActionType = {
+    type: 'ADD-TODOLIST',
+        payload: {
+            id: string
+            title: string
+        }
+}
+
+
+export type RemoveTodolistActionType = {
+    type: 'REMOVE-TODOLIST'
+    payload: {
+        id: string
+    }
+}
+
+
+export type ChangeTodolistTitleActionType = {
+    type: 'CHANGE-TODOLIST-TITLE'
+    payload: {
+        id: string
+        title: string
+    }
+}
+
+export type ChangeTodolistFilterActionType = {
+    type: 'CHANGE-TODOLIST-FILTER'
+    payload: {
+        id: string
+        filter: FilterValues
+    }
+}
+
+
+type ActionsType = 
+    | RemoveTodolistActionType
+    | AddTodolistActionType
+    | ChangeTodolistTitleActionType
+    | ChangeTodolistFilterActionType
+
 export const removeTodolistAC = (id: string) => {
     return { 
         type: 'REMOVE-TODOLIST' ,
@@ -142,10 +141,11 @@ export const removeTodolistAC = (id: string) => {
                     // а у нас он теперь литеральный!!!!!*****
 }
 
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (id: string, title: string) => {
     return  {
         type: 'ADD-TODOLIST',
         payload: {
+            id: id,
             title: title,
         },
     } as const 

@@ -10,7 +10,7 @@ import ButtonAppBar from './ButtonAppBar';
 import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline  from '@mui/material/CssBaseline'
-import { addTodolistAC, changeTodolisFiltertAC, changeTodolisTitletAC, removeTodolistAC, todolistsReducer } from './model/todolists-reducer'
+import { addTodolistAC, changeTodolisFiltertAC, changeTodolisTitletAC, removeTodolistAC, todolistsReducer } from './module/todolists-reducer'
 
 export type Task = {
   id: string
@@ -91,8 +91,9 @@ export const App = () => {
 
   const deleteTodolist = (todolistId: string) => {
     // setTodolists(todolists.filter(todo => todo.id !== todolistId))
-    // delete tasks[todolistId]
+    
     dispatchTodolists(removeTodolistAC(todolistId))
+    delete tasks[todolistId]
     setTasks({...tasks})
   }
 

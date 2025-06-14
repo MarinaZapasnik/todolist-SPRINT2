@@ -20,8 +20,9 @@ export const tasksReducer = (state: TasksStateProps, action: ActionsType) => {
             return ({ ...state, [action.payload.todolistId]:newState})
         }
         case 'DELETE_TASKS_FROM_TODOLIST': {
-            delete state[action.payload.todolistId]
-            return ({ ...state})
+            const newState = { ...state}
+            delete newState[action.payload.todolistId]
+            return newState
         }    
         case 'UPDATE_TASK_TITLE' : {
             return({ ...state, [action.payload.todolistId]:state[action.payload.todolistId].map(

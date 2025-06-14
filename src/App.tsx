@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline  from '@mui/material/CssBaseline'
 import { addTodolistAC, changeTodolisFiltertAC, changeTodolisTitletAC, removeTodolistAC, todolistsReducer } from './module/todolists-reducer'
+import { addTasksToNewTodolistAC, changeTaskStatusAC, createTaskAC, deleteTaskAC, deleteTasksFromTodolistAC, tasksReducer, updateTaskTitleAC } from './module/tasks-reducer'
 
 export type Task = {
   id: string
@@ -50,7 +51,7 @@ export const App = () => {
 
   // таски для каждого из тудулистов привязанные по id 
   //таким образом избегаеи большой вложенности
-  const [tasks, setTasks] = useState<TasksStateProps>({
+  const [tasks, dispatchTasks] = useReducer(tasksReducer, {
     [todolistId_1]: [
       { id: v1(), title: 'HTML&CSS', isDone: true },
       { id: v1(), title: 'JS', isDone: true },
@@ -69,18 +70,21 @@ export const App = () => {
 
   const deleteTask = (taskId: string, todolistId: string) => {
     
-    setTasks({...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== taskId)})
+    //setTasks({...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== taskId)})
+    dispatchTasks(deleteTaskAC(todolistId, taskId))
   }
 
   const createTask = (title: string, todolistId: string) => {
-    const newTask = {id: v1(), title, isDone: false}
-    const newTasks = [newTask, ...tasks[todolistId]]
-    setTasks({...tasks, [todolistId]: newTasks})
+    // const newTask = {id: v1(), title, isDone: false}
+    // const newTasks = [newTask, ...tasks[todolistId]]
+    //setTasks({...tasks, [todolistId]: newTasks})
+    dispatchTasks(createTaskAC(todolistId,title))
   }
 
   const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
-    const newState = tasks[todolistId].map(task => task.id === taskId ? { ...task, isDone } : task)
-    setTasks({ ...tasks, [todolistId]: newState})
+    // const newState = tasks[todolistId].map(task => task.id === taskId ? { ...task, isDone } : task)
+    // setTasks({ ...tasks, [todolistId]: newState})
+    dispatchTasks(changeTaskStatusAC(todolistId, taskId, isDone))
   }
 
   const changeFilter = (filter: FilterValues, todolistId: string) => {
@@ -91,14 +95,16 @@ export const App = () => {
 
   const deleteTodolist = (todolistId: string) => {
     // setTodolists(todolists.filter(todo => todo.id !== todolistId))
-    
+    // delete tasks[todolistId]
+    // setTasks({...tasks})
     dispatchTodolists(removeTodolistAC(todolistId))
-    delete tasks[todolistId]
-    setTasks({...tasks})
+    dispatchTasks(deleteTasksFromTodolistAC(todolistId))
+    
   }
 
   const updateTaskTitle = (todolistId: string, taskId: string, updatedTitle: string) => {
-    setTasks({ ...tasks, [todolistId]:tasks[todolistId].map(task => task.id === taskId ? { ...task, title:updatedTitle}: task)})
+    //setTasks({ ...tasks, [todolistId]:tasks[todolistId].map(task => task.id === taskId ? { ...task, title:updatedTitle}: task)})
+    dispatchTasks(updateTaskTitleAC(todolistId, taskId, updatedTitle))
   }
 
   const updateTodolistTitle = (todolistId: string, updatedTitle: string) => {
@@ -147,7 +153,8 @@ export const App = () => {
     const newTododList: TodoListProps = {id:v1(), title, filter: 'all'}
     // setTodolists([ ...todolists, newTododList])
     dispatchTodolists(addTodolistAC(newTododList.id, title))
-    setTasks({ ...tasks,[newTododList.id]:[]})
+    //setTasks({ ...tasks,[newTododList.id]:[]})
+    dispatchTasks(addTasksToNewTodolistAC(newTododList.id))
   }
 
   
